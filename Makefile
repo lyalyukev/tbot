@@ -1,4 +1,4 @@
-APP := $(shell basename $(shell git remote get-url origin))
+APP := tbot
 REGISTRY := europe-west4-docker.pkg.dev/booming-crowbar-407418/lyalyukev
 VERSION=$(shell git describe --tags --abbrev=0)-$(shell git rev-parse --short HEAD)
 TARGETOS ?= linux
