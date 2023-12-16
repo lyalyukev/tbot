@@ -21,16 +21,16 @@ build: format get
 	CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -v -o kbot -ldflags "-X="github.com/lyalyukev/tbot/cmd.appVersion=${VERSION}
 
 linux: format get
-	CGO_ENABLED=0 GOOS=linux GOARCH=${TARGETARCH} go build -v -o kbot
+	CGO_ENABLED=0 GOOS=linux GOARCH=${TARGETARCH} go build -v -o kbot -ldflags "-X="github.com/lyalyukev/tbot/cmd.appVersion=${VERSION}
 
 arm: format get
-	CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=arm64 go build -v -o kbot
+	CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=arm64 go build -v -o kbot -ldflags "-X="github.com/lyalyukev/tbot/cmd.appVersion=${VERSION}
 
 macos: format get
-	CGO_ENABLED=0 GOOS=darwin GOARCH=${TARGETARCH} go build -v -o kbot
+	CGO_ENABLED=0 GOOS=darwin GOARCH=${TARGETARCH} go build -v -o kbot -ldflags "-X="github.com/lyalyukev/tbot/cmd.appVersion=${VERSION}
 
 windows: format get
-	CGO_ENABLED=0 GOOS=windows GOARCH=${TARGETARCH} go build -v -o kbot
+	CGO_ENABLED=0 GOOS=windows GOARCH=${TARGETARCH} go build -v -o kbot -ldflags "-X="github.com/lyalyukev/tbot/cmd.appVersion=${VERSION}
 
 image:
 	docker build . -t ${REGISTRY}/${APP}:${VERSION}-${TARGETARCH}  --build-arg TARGETARCH=${TARGETARCH}
