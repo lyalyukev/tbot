@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: europe-west4-docker.pkg.dev/booming-crowbar-407418/lyalyukev
+  repository: ghcr.io/lyalyukev
   tag: v1.0.0-1c1ec8c
   arch: amd64
 
