@@ -7,4 +7,4 @@ Add our bot in Telegram:
 Command:
 > /hello
 
-T
+Fix
