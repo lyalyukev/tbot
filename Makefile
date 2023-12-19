@@ -1,5 +1,5 @@
 APP := tbot
-REGISTRY := europe-west4-docker.pkg.dev/booming-crowbar-407418/lyalyukev
+REGISTRY := ghcr.io/lyalyukev
 VERSION=$(shell git describe --tags --abbrev=0)-$(shell git rev-parse --short HEAD)
 TARGETOS ?= linux
 TARGETARCH ?= amd64
