@@ -49,6 +49,9 @@ to quickly create a Cobra application.`,
 			if text == "/hello" {
 				return c.Send("Received command Hello")
 			}
+			if text == "/version" {
+				return c.Send(appVersion)
+			}
 
 			return nil
 		})
