@@ -7,6 +7,7 @@ image:
   repository: ghcr.io/lyalyukev
   tag: v1.0.0-9d6aa43
   arch: amd64
+  os: linux
 secret:
   name: "tbot"
   env: "TELE_TOKEN"
