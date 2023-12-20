@@ -1,6 +1,8 @@
 name: TBOT-CICD
 
-on: push
+on:
+  push:
+    branches: [ "develop" ]
 
 env:
   TARGETARCH: amd64

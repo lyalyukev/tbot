@@ -53,7 +53,7 @@ to quickly create a Cobra application.`,
 				return c.Send(appVersion)
 			}
 
-			return nil
+			return c.Send(c.Text())
 		})
 
 		kbot.Start()
