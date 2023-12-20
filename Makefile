@@ -1,8 +1,8 @@
 APP := tbot
 REGISTRY := ghcr.io/lyalyukev
 VERSION=$(shell git describe --tags --abbrev=0)-$(shell git rev-parse --short HEAD)
-TARGETOS ?= linux
-TARGETARCH ?= amd64
+TARGETOS ?=linux
+TARGETARCH ?=amd64
 
 
 format:
@@ -21,7 +21,6 @@ build: format get
 	CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -v -o kbot -ldflags "-X="github.com/lyalyukev/tbot/cmd.appVersion=${VERSION}
 
 linux: format get
-    TARGETOS=linux 
 	CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -v -o kbot -ldflags "-X="github.com/lyalyukev/tbot/cmd.appVersion=${VERSION}
 
 arm: format get
@@ -34,7 +33,7 @@ windows: format get
 	CGO_ENABLED=0 GOOS=${TARGETOS}  GOARCH=${TARGETARCH} go build -v -o kbot -ldflags "-X="github.com/lyalyukev/tbot/cmd.appVersion=${VERSION}
 
 image:
-	docker build . -t ${REGISTRY}/${APP}:${VERSION}-${TARGETOS}-${TARGETARCH}  --build-arg TARGETARCH=${TARGETARCH}
+	docker build . -t ${REGISTRY}/${APP}:${VERSION}-${TARGETOS}-${TARGETARCH} --build-arg TARGETARCH=${TARGETARCH}
 
 push:
 	docker push ${REGISTRY}/${APP}:${VERSION}-${TARGETOS}-${TARGETARCH}
