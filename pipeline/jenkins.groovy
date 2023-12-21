@@ -10,7 +10,7 @@ pipeline {
             steps {
                 echo "Build for platform ${params.OS}"
 
-                echo "Build for arch: ${params.ARCH}"
+                echo "Build for Arch: ${params.ARCH}"
 
             }
         }
