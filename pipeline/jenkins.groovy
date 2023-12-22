@@ -11,6 +11,7 @@ pipeline {
         stage('Example') {
             steps {
                 echo "Build image for platform ${params.OS}"
+                sh "make build"
 
                 echo "Build image for Arch: ${params.ARCH}"
 
