@@ -10,16 +10,14 @@ pipeline {
     stages {
         stage('Example') {
             steps {
-{
+               
                 echo "Build image for platform ${params.OS}"
                 echo "Build image for Arch: ${params.ARCH}"
 
-                withEnv(['TARGETOS=${params.OS}', 'TARGETARCH=${params.ARCH}']) {
+                withEnv(["TARGETOS=${params.OS}", "TARGETARCH=${params.ARCH}"]) {
                     sh "make image"
                     sh "make push"
                 }
-
-            }
         }
     }
 }
