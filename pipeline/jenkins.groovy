@@ -12,7 +12,9 @@ pipeline {
             steps {
                 echo "Build image for platform ${params.OS}"
                 sh "cat /etc/os-release"
-                sh "cat /proc/cpuinfo"
+                sh "sudo apt update"
+                sh  "sudo apt install make"
+
                 sh "make build"
 
                 echo "Build image for Arch: ${params.ARCH}"
