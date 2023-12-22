@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent none
     parameters {
         choice(name: 'OS', choices: ['linux', 'darwin', 'windows', 'all'], description: 'Pick OS')
         choice(name: 'ARCH', choices: ['amd64', 'arm64'], description: 'Pick ARCH')
