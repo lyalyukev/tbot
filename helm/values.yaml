@@ -6,7 +6,7 @@ replicaCount: 1
 image:
   registry: "ghcr.io"
   repository: "lyalyukev"
-  tag: "v1.0.0-9d6aa43"
+  tag: "v1.0.4-34d94a3"
   arch: "amd64"
   os: "linux"
 secret:
