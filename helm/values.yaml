@@ -5,7 +5,7 @@
 replicaCount: 1
 image:
   registry: "ghcr.io"
-  repository: "lyalyukev/tbot"
+  repository: "lyalyukev"
   tag: "v1.0.4-e14842d"
   arch: "amd64"
   os: "linux"
