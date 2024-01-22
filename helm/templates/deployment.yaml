@@ -27,3 +27,5 @@ spec:
                 secretKeyRef:
                   key: {{ .Values.secret.key }}
                   name: {{ .Values.secret.name }}-secret
+          imagePullSecrets:
+            - name: {{ .Values.image.pullsecret }}
