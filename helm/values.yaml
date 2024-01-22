@@ -9,6 +9,7 @@ image:
   tag: "v1.0.4-05b10c0"
   arch: "amd64"
   os: "linux"
+  pullsecret: "ghcr-secret"
 secret:
   name: "tbot"
   env: "TELE_TOKEN"
