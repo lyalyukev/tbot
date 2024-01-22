@@ -10,6 +10,7 @@ image:
   arch: "amd64"
   os: "linux"
   pullsecret: "ghcr-secret"
+  option: ""
 secret:
   name: "tbot"
   env: "TELE_TOKEN"
