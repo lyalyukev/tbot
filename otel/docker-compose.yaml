@@ -3,7 +3,7 @@ services:
 
   # Kbot
   kbot:
-    image: ghcr.io/lyalyukev/tbot:v1.0.4-fecdcb7-linux-amd64
+    image: ghcr.io/lyalyukev/tbot:v1.0.4-89731ef-linux-amd64
     environment:
       - METRICS_HOST=collector:4317
       - TELE_TOKEN=${TELE_TOKEN}
