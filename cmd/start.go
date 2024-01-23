@@ -5,16 +5,66 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"time"
+	"context"
 
 	"github.com/spf13/cobra"
 	telebot "gopkg.in/telebot.v3"
+
+	"github.com/hirosassa/zerodriver"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetricgrpc"
+	sdkmetric "go.opentelemetry.io/otel/sdk/metric"
+	"go.opentelemetry.io/otel/sdk/resource"
+	semconv "go.opentelemetry.io/otel/semconv/v1.12.0"
 )
 
 var Teletoken = os.Getenv("TELE_TOKEN")
+var MetricsHost = os.Getenv("METRICS_HOST")
 var appVersion = "version"
+
+// Initialize OpenTelemetry
+func initMetrics(ctx context.Context) {
+
+	// Create a new OTLP Metric gRPC exporter with the specified endpoint and options
+	exporter, _ := otlpmetricgrpc.New(
+		ctx,
+		otlpmetricgrpc.WithEndpoint(MetricsHost),
+		otlpmetricgrpc.WithInsecure(),
+	)
+
+	// Define the resource with attributes that are common to all metrics.
+	// labels/tags/resources that are common to all metrics.
+	resource := resource.NewWithAttributes(
+		semconv.SchemaURL,
+		semconv.ServiceNameKey.String(fmt.Sprintf("kbot_%s", appVersion)),
+	)
+
+	// Create a new MeterProvider with the specified resource and reader
+	mp := sdkmetric.NewMeterProvider(
+		sdkmetric.WithResource(resource),
+		sdkmetric.WithReader(
+			// collects and exports metric data every 10 seconds.
+			sdkmetric.NewPeriodicReader(exporter, sdkmetric.WithInterval(10*time.Second)),
+		),
+	)
+
+	// Set the global MeterProvider to the newly created MeterProvider
+	otel.SetMeterProvider(mp)
+
+}
+
+func pmetrics(ctx context.Context, payload string) {
+	// Get the global MeterProvider and create a new Meter with the name "kbot_light_signal_counter"
+	meter := otel.GetMeterProvider().Meter("kbot_light_signal_counter")
+
+	// Get or create an Int64Counter instrument with the name "kbot_light_signal_<payload>"
+	counter, _ := meter.Int64Counter(fmt.Sprintf("kbot_light_signal_%s", payload))
+
+	// Add a value of 1 to the Int64Counter
+	counter.Add(ctx, 1)
+}
 
 // startCmd represents the start command
 var startCmd = &cobra.Command{
@@ -28,6 +78,8 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 
+		logger := zerodriver.NewProductionLogger()
+
 		fmt.Printf("Telebot %s started", appVersion)
 
 		pref := telebot.Settings{
@@ -38,11 +90,16 @@ to quickly create a Cobra application.`,
 		kbot, err := telebot.NewBot(pref)
 
 		if err != nil {
-			log.Fatalf("Plaese check TELE_TOKEN env variable. %s", err)
+			logger.Fatal().Str("Error", err.Error()).Msg("Please check TELE_TOKEN")
 			return
 		}
 
 		kbot.Handle(telebot.OnText, func(c telebot.Context) error {
+			logger.Info().Str("Payload", c.Text()).Msg(c.Message().Payload)
+
+			payload := c.Message().Payload
+			pmetrics(context.Background(), payload)
+			
 			fmt.Println(c.Message().Payload, c.Text())
 			text := c.Text()
 
@@ -62,6 +119,8 @@ to quickly create a Cobra application.`,
 }
 
 func init() {
+	ctx := context.Background()
+	initMetrics(ctx)
 	rootCmd.AddCommand(startCmd)
 
 	// Here you will define your flags and configuration settings.
